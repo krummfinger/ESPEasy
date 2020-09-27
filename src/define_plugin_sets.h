@@ -817,7 +817,8 @@ To create/register a plugin, you have to :
     #define LIMIT_BUILD_SIZE
   #endif
 
-
+    #define USES_P111 //433MHZ
+    #define USES_P144 //433MHZ 
     #define USES_P045   // MPU6050
     #define USES_P047   // I2C_soil_misture
     #define USES_P048   // Motoshield_v2

@@ -1,8 +1,8 @@
 # cmd: "cd {PROJECT_PATH}; platformio"
 cmd: "platformio"
-name: "Build with error highlighting (dev_ESP8266_4096)"
+name: "Krummfinger dev_ESP8266_4M1M"
 args:
-  - run --environment dev_ESP8266_4096
+  - run --environment dev_ESP8266_4M1M
 sh: true
 cwd: "{PROJECT_PATH}"
 # env:
