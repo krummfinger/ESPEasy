@@ -817,8 +817,7 @@ To create/register a plugin, you have to :
     #define LIMIT_BUILD_SIZE
   #endif
 
-    #define USES_P111 //433MHZ
-    #define USES_P144 //433MHZ 
+
     #define USES_P045   // MPU6050
     #define USES_P047   // I2C_soil_misture
     #define USES_P048   // Motoshield_v2
@@ -869,6 +868,10 @@ To create/register a plugin, you have to :
     //#define USES_P096  // eInk   (Needs lib_deps = Adafruit GFX Library, LOLIN_EPD )
     #define USES_P097   // Touch (ESP32)
     #define USES_P100   // Pulse Counter - DS2423
+    #define USES_P111 //433MHZ
+    #define USES_P144 //433MHZ
+
+
 #endif
 
 
