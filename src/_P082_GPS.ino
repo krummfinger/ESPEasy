@@ -12,10 +12,12 @@
 //
 //
 
-# include "ESPEasy_packed_raw_data.h"
+#include <ESPeasySerial.h>
+#include <TinyGPS++.h>
 
-# include "src/Globals/ESPEasy_time.h"
-# include "src/Helpers/ESPEasy_time_calc.h"
+#include "src/DataStructs/ESPEasy_packed_raw_data.h"
+#include "src/Globals/ESPEasy_time.h"
+#include "src/Helpers/ESPEasy_time_calc.h"
 
 # include "src/PluginStructs/P082_data_struct.h"
 
@@ -277,7 +279,7 @@ boolean Plugin_082(byte function, struct EventStruct *event, String& string) {
 # ifdef P082_SEND_GPS_TO_LOG
         addLog(LOG_LEVEL_DEBUG, P082_data->_lastSentence);
 # endif // ifdef P082_SEND_GPS_TO_LOG
-        Scheduler.schedule_task_device_timer(event->TaskIndex, millis() + 10);
+        Scheduler.schedule_task_device_timer(event->TaskIndex, millis());
         delay(0); // Processing a full sentence may take a while, run some
                   // background tasks.
       }
@@ -295,8 +297,10 @@ boolean Plugin_082(byte function, struct EventStruct *event, String& string) {
 
         if (activeFix != curFixStatus) {
           // Fix status changed, send events.
-          String event = curFixStatus ? F("GPS#GotFix") : F("GPS#LostFix");
-          eventQueue.add(event);
+          if (Settings.UseRules) {
+            String event = curFixStatus ? F("GPS#GotFix") : F("GPS#LostFix");
+            eventQueue.add(event);
+          }
           activeFix = curFixStatus;
         }
         double distance = 0.0;
@@ -359,9 +363,11 @@ boolean Plugin_082(byte function, struct EventStruct *event, String& string) {
 
                 // Add sanity check for distance travelled
                 if (distance > static_cast<double>(P082_DISTANCE)) {
-                  String eventString = F("GPS#travelled=");
-                  eventString += distance;
-                  eventQueue.add(eventString);
+                  if (Settings.UseRules) {
+                    String eventString = F("GPS#travelled=");
+                    eventString += distance;
+                    eventQueue.add(eventString);
+                  }
 
                   if (loglevelActiveFor(LOG_LEVEL_INFO)) {
                     String log = F("GPS: Distance trigger : ");
